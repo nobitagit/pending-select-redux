@@ -57,11 +57,11 @@ const App = ({
 const toProps = state => {
   console.log(state);
   return {
-    names: state ? state.names : [],
-    adults: getAdults(state.names),
+    names: state.names.items,
+    adults: getAdults(state),
     oldest: _.noop,
-    over30: getOver30(state.names),
-    even: getEvens(state.names)
+    over30: getOver30(state),
+    even: getEvens(state)
   };
 };
 

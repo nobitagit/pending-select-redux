@@ -4,14 +4,14 @@ export const getNames = () => {
 
 }
 
-export const getEvens = obj => {
-  return _.filter(o => o.age % 2 === 0, obj);
+export const getEvens = state => {
+  return _.filter(o => o.age % 2 === 0, state.names.items);
 }
 
-export const getAdults = obj => {
-  return _.filter(o => o.age > 18, obj);
+export const getAdults = state => {
+  return _.filter(o => o.age > 18, state.names.items);
 }
 
-export const getOver30 = obj => {
-  return _.filter(o => o.age > 30, obj);
+export const getOver30 = state => {
+  return _.filter(o => o.age > 30, state.names.items);
 }
