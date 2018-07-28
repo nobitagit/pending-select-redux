@@ -21,6 +21,6 @@ export function fireRequest(len) {
       const ret = _.nth(len, data);
       console.log(ret);
       dispatch(receiveNames(ret));
-    }, _.random(100, 40000));
+    }, _.random(3000, 4000));
   }
 }

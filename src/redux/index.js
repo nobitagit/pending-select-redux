@@ -5,8 +5,8 @@ import pending from './pendingReducer';
 
 export const TYPES = {
   NAMES: {
-    REQUEST: 'REQUEST_NAMES',
-    SUCCESS: 'REQUEST_SUCCESS_NAMES',
+    REQUEST: 'NAMES_REQUEST',
+    SUCCESS: 'NAMES_SUCCESS',
   },
 };
 
