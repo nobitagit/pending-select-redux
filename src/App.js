@@ -5,7 +5,7 @@ import './App.css';
 import { fireRequest } from './redux/actions';
 import { connect } from 'react-redux';
 import { getAdults, getOver30, getEvens } from './redux/selectors';
-import { isPending } from './redux/pendingReducer';
+import { awaitKey, isPending, isKeyDone } from './redux/pendingReducer';
 import { TYPES } from './redux';
 
 const App = ({
@@ -34,9 +34,9 @@ const App = ({
           </ul>
         </div>
         <div>
-          <p>adults:</p>
+          <p>adults: status => {adults.done ? 'done' : 'not done'}</p>
           <ul>
-            {_.map(o => <li key={o.id}>{o.name}, {o.age}</li>, adults)}
+            {_.map(o => <li key={o.id}>{o.name}, {o.age}</li>, adults.result)}
           </ul>
         </div>
         <div>
@@ -56,11 +56,19 @@ const App = ({
   </div>
 );
 
+const reqKeys = {
+  adults: Symbol('adults'),
+};
+
 const toProps = (state, op) => {
-  console.log(op);
+//  console.log(op);
+console.log(state);
   return {
     names: state.names.items,
-    adults: getAdults(state),
+    adults: {
+      result: getAdults(state),
+      done: isKeyDone(reqKeys.adults)(state),
+    },
     oldest: _.noop,
     over30: getOver30(state),
     even: getEvens(state),
@@ -70,10 +78,25 @@ const toProps = (state, op) => {
 
 const toDispatch = dispatch => ({
   onRequestNames: () => {
-    dispatch(fireRequest(1));
+    const reqs = [
+      [reqKeys.adults, dispatch(fireRequest(20))],
+    ];
+
+    _.map(r => awaitKey(...r), reqs);
+
     dispatch(fireRequest(2));
     dispatch(fireRequest(3));
+
+
   }
 })
 
-export default connect(toProps, toDispatch)(App);
+const mergeProps = (fromState, fromDispatch) => {
+  //console.log(fromDispatch.onRequestNames());
+  return {
+    ...fromState,
+    ...fromDispatch,
+  };
+}
+
+export default connect(toProps, toDispatch, mergeProps)(App);
